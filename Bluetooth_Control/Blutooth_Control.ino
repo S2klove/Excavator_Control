@@ -7,11 +7,13 @@ const int IN2_PIN = 25; // Motor A input 2 (adjust as needed)
 
 // Setting PWM properties
 const int freq = 1000;         // PWM frequency in Hz
-const int pwmChannelA = 0;     // PWM channel (0-15)
-const int pwmChannelB = 1;     // PWM channel (0-15)
+const int pwmchannel1A = 0;     // PWM channel (0-15)
+const int pwmchannel1B = 1;     // PWM channel (0-15)
+const int pwmChannel2A = 0;     // PWM channel (0-15)
+const int pwmChannel2B = 1;     // PWM channel (0-15)
 const int resolution = 8;      // PWM resolution (0-255 range)
 const int MAX_SPEED = 255;     // Maximum PWM value
-
+    
 // Bluepad32 controller callback function
 ControllerPtr myControllers[BP32_MAX_GAMEPADS];
 
@@ -47,16 +49,16 @@ void setMotorSpeed(int speed) {
 
     if (speed == 0) {
         // Stop the motor
-        ledcWrite(pwmChannelA, 0);
-        ledcWrite(pwmChannelB, 0);
+        ledcWrite(pwmchannel1A, 0);
+        ledcWrite(pwmchannel1B, 0);
     } else if (speed > 0) {
         // Forward direction (adjust pins/channels if reversed)
-        ledcWrite(pwmChannelA, speed);
-        ledcWrite(pwmChannelB, 0);
+        ledcWrite(pwmchannel1A, speed);
+        ledcWrite(pwmchannel1B, 0);
     } else {
         // Reverse direction
-        ledcWrite(pwmChannelA, 0);
-        ledcWrite(pwmChannelB, abs(speed));
+        ledcWrite(pwmchannel1A, 0);
+        ledcWrite(pwmchannel1B, abs(speed));
     }
 }
 
@@ -65,10 +67,10 @@ void setup() {
     Serial.println("Starting Bluepad32 motor control...");
 
     // Setup PWM channels
-    ledcSetup(pwmChannelA, freq, resolution);
-    ledcAttachPin(IN1_PIN, pwmChannelA);
-    ledcSetup(pwmChannelB, freq, resolution);
-    ledcAttachPin(IN2_PIN, pwmChannelB);
+    ledcSetup(pwmchannel1A, freq, resolution);
+    ledcAttachPin(IN1_PIN, pwmchannel1A);
+    ledcSetup(pwmchannel1B, freq, resolution);
+    ledcAttachPin(IN2_PIN, pwmchannel1B);
 
     // Set up Bluepad32 using the updated callback function names
     BP32.setup(&onConnectedController, &onDisconnectedController);
